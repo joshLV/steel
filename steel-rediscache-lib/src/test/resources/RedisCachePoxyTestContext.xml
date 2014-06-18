@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<bean id="hellworld" class="com.gw.steel.impl.HelloWorldCacheBean"></bean>
+	
+	<!-- 需要在使用的项目中引入 -->
+	<bean id="" class="com.gw.steel.spring.rediscache.ShardJedisConfigBuilder" init-method="init">
+		<property name="configFile">
+			<value>jedis-shard.properties</value>
+		</property>
+	</bean>
+	
+	<import resource="classpath:/com/gw/steel/rediscache/config/redisCacheLibSpringContext.xml"/>
+</beans>
