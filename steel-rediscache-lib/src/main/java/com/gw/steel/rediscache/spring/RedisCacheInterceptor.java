@@ -1,6 +1,9 @@
 package com.gw.steel.rediscache.spring;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,7 +62,10 @@ public class RedisCacheInterceptor implements  MethodInterceptor, InitializingBe
 		if(m.isAnnotationPresent(CacheGet.class)){
 			try{
 				cacheGetKey =resolveCacheGetKey(invocation);
-				Object cacheItem = retrieveObject(cacheGetKey, invocation.getMethod().getReturnType());
+				invocation.getMethod().getParameterTypes();
+				Class<?> returnType = invocation.getMethod().getReturnType();
+			    
+				Object cacheItem = retrieveObject(cacheGetKey, returnType, invocation.getMethod().getGenericReturnType());
 				
 				if(cacheItem!=null){
 					if(logger.isDebugEnabled()){
@@ -262,7 +268,7 @@ public class RedisCacheInterceptor implements  MethodInterceptor, InitializingBe
     	}
     }
 	
-	 private Object retrieveObject(final String keyString, Class<?> clazz) {    	      
+	 private Object retrieveObject(final String keyString, Class<?> returnClass, Type parameterizedType) {    	      
         ShardedJedis jedis = null;
         String value;
         ShardedJedisPool pool = redisCacheEngine.getPool();       
@@ -274,7 +280,14 @@ public class RedisCacheInterceptor implements  MethodInterceptor, InitializingBe
 				pool.returnResource(jedis);
 			}
 		}			
-        return JSON.parseObject(value, clazz);
+		if (Collection.class.isAssignableFrom(returnClass)) {
+			if(parameterizedType instanceof ParameterizedType) {
+				Class<?> elementClass = (Class<?>) ((ParameterizedType) parameterizedType).getActualTypeArguments()[0];
+				return JSON.parseArray(value, elementClass);
+			}
+		}
+		
+        return JSON.parseObject(value, returnClass);
     }
 	 
 	 private String keyAppend(String key, String append){

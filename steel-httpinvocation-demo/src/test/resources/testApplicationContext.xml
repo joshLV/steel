@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+  <import resource="classpath:/com/gw/steel/httpinvocation/config/httpInvokerLibSpringContext.xml"/>
+  
+  <bean id="com.gw.steel.httpinvocation.client.HttpInvocationConfig" class="com.gw.steel.httpinvocation.client.HttpInvocationConfig">
+  	<property name="serviceUrl" value="http://10.15.201.22:8080/demo/service"></property>
+  	<!--  <property name="httpRequestExecutor" ref="com.gw.steel.httpinvocation.httpInvokerRequestExecutor"></property> -->
+  	<!-- <property name="serviceConfigs">
+  		<map>
+  			
+  		</map>
+  	</property> -->
+  </bean>
+  <bean id="com.gw.steel.httpinvocation.httpInvokerRequestExecutor" class="org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor">  
+	    <property name="connectTimeout" value="50000"></property>
+	    <property name="readTimeout" value="50000"></property>
+    </bean>
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<alias name="com.gw.steel.httpinvocation.client.HttpInvocationConfig" alias="com_gw_steel_httpinvocation_client_HttpInvocationConfig"/>
+	
+	
+	<bean class="com.gw.steel.httpinvocation.client.HttpInvocationBeanPostProcessor" >
+		<property name="defaultServiceUrl" value="#{com_gw_steel_httpinvocation_client_HttpInvocationConfig.serviceUrl}" ></property>
+		<property name="serviceConfigs" value="#{com_gw_steel_httpinvocation_client_HttpInvocationConfig.serviceConfigs}" ></property>
+		<property name="httpRequestExecutor" value="#{com_gw_steel_httpinvocation_client_HttpInvocationConfig.httpRequestExecutor}"></property>
+	</bean>
+	
+	
+</beans>
